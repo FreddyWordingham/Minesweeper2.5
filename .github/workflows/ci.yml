@@ -203,7 +203,7 @@ jobs:
 
             - name: Generate Documentation
               run: |
-                  rm -r docs/build
+                  rm -r docs/build || true
                   sh docs/build.sh
 
             - name: Commit files
