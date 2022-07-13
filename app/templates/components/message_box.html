@@ -1,0 +1,20 @@
+<div
+    id="error_message_display"
+    class="alert alert-danger"
+    role="alert"
+    onclick="$(this).slideUp()"
+    style="display: none"
+>
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span id="error_message"> </span>
+</div>
+
+<script>
+    function show_error_message(message) {
+        $("#error_message").text(message);
+        $("#error_message_display").slideDown();
+        setTimeout(function () {
+            $("#error_message_display").slideUp();
+        }, 5000);
+    }
+</script>

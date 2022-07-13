@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Freddy Wordingham</title>
+        <link
+            rel="shortcut icon"
+            type="image/jpg"
+            href="/static/icons/fw_favicon.ico"
+        />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="http://fonts.googleapis.com/css?family=Raleway"
+        />
+        <link
+            rel="stylesheet"
+            href="/static/libraries/bootstrap-dist/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="/static/libraries/bootstrap-icons/bootstrap-icons.css"
+        />
+        <link rel="stylesheet" href="/static/styles/base.css" />
+        <script src="/static/libraries/jquery-3.6.0.min.js"></script>
+        <script src="/static/libraries/bootstrap-dist/js/bootstrap.min.js"></script>
+        <script src="/static/libraries/bootstrap-dist/js/bootstrap.min.js"></script>
+        <script src="/static/libraries/chart-js/chart.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script
+            id="MathJax-script"
+            async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        ></script>
+        <script src="/static/client.js"></script>
+    </head>
+    <body>
+        <div id="wrapper" class="container" style="display: none">
+            <div
+                class="row d-flex align-items-center justify-content-center"
+                style="height: 100vh"
+            >
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#wrapper").fadeIn();
+            });
+        </script>
+    </body>
+</html>
