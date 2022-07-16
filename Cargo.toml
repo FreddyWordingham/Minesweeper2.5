@@ -3,4 +3,14 @@ name = "fw"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = []
+debug = ["board_plugin/debug", "bevy-inspector-egui"]
+
 [dependencies]
+bevy = "0.7"
+board_plugin = { path = "plugins/board_plugin" }
+bevy-inspector-egui = { version = "0.11", optional = true }
+
+[workspace]
+members = ["plugins/board_plugin"]
