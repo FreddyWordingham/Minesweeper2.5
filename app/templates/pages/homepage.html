@@ -1,11 +1,27 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="rounded-3" style="background-color: #ffaa; max-width: 600px">
+<div class="rounded-3" style="background-color: #fffa; max-width: 600px">
     <div class="container-fluid py-5">
-        <h1 style="text-align: center">Freddy</h1>
-        asdas
+        <h1 style="text-align: center">Game</h1>
+        <hr />
+        <button
+            id="reset_game_button"
+            class="btn btn-primary"
+            onclick="reset_game()"
+        >
+            Start
+        </button>
         <hr />
     </div>
 </div>
+
+<script>
+    const reset_game = () => {
+        $("#reset_game_button")
+            .removeClass("btn-primary")
+            .addClass("btn-danger")
+            .text("Reset");
+    };
+</script>
 
 {% endblock %}

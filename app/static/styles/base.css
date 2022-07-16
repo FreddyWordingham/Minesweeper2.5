@@ -1,11 +1,12 @@
 body {
-    background-image: url('../images/background.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: 'Raleway', sans-serif;
+  background: #4b6cb7;
+  background: -webkit-linear-gradient(#4b6cb7, #182848);
+  background: linear-gradient(#4b6cb7, #182848);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Raleway', sans-serif;
 }
-
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

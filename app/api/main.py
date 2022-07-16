@@ -14,7 +14,7 @@ app.include_router(auth_route, prefix="/auth")
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request):
     return settings.templates.TemplateResponse(
-        "pages/overview.html", {"request": request}
+        "pages/homepage.html", {"request": request}
     )
 
 
