@@ -6,7 +6,7 @@ use crate::resources::tile::Tile;
 #[derive(Debug, Clone)]
 pub struct TileMap {
     bomb_count: u16,
-    pub map: Array2<Tile>,
+    map: Array2<Tile>,
 }
 
 impl TileMap {
