@@ -9,14 +9,14 @@ fn main() {
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
         title: "SimRPG!".to_string(),
-        width: 600.,
-        height: 400.,
+        width: 1200.,
+        height: 800.,
         ..default()
     })
     .add_plugins(DefaultPlugins)
     .insert_resource(BoardOptions {
-        map_size: (50, 40),
-        bomb_count: 400,
+        map_size: (40, 20),
+        bomb_count: 40,
         tile_padding: 1.0,
         ..default()
     })

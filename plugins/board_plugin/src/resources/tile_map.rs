@@ -1,4 +1,3 @@
-use nalgebra::Vector2;
 use ndarray::Array2;
 use rand::{thread_rng, Rng};
 
@@ -8,15 +7,15 @@ use crate::{components::Coordinates, resources::Tile};
 /// [6] [7] [8]
 /// [4]     [5]
 /// [1] [2] [3]
-const SQUARE_COORDINATES: [Vector2<i8>; 8] = [
-    Vector2::<i8>::new(-1, -1),
-    Vector2::<i8>::new(0, -1),
-    Vector2::<i8>::new(1, -1),
-    Vector2::<i8>::new(-1, 0),
-    Vector2::<i8>::new(1, 0),
-    Vector2::<i8>::new(-1, 1),
-    Vector2::<i8>::new(0, 1),
-    Vector2::<i8>::new(1, 1),
+const SQUARE_COORDINATES: [(i8, i8); 8] = [
+    (-1, -1),
+    (0, -1),
+    (1, -1),
+    (-1, 0),
+    (1, 0),
+    (-1, 1),
+    (0, 1),
+    (1, 1),
 ];
 
 /// Base tile map.
@@ -54,7 +53,7 @@ impl TileMap {
         // Place bomb neighbors
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let coords = Coordinates::new(x as i8, y as i8);
+                let coords = Coordinates::new(x as u16, y as u16);
                 if self.is_bomb_at(coords) {
                     continue;
                 }
@@ -105,9 +104,14 @@ impl TileMap {
         self.bomb_count
     }
 
+    pub fn map(&self) -> &Array2<Tile> {
+        &self.map
+    }
+
     pub fn safe_square_at(&self, coordinates: Coordinates) -> impl Iterator<Item = Coordinates> {
         SQUARE_COORDINATES
             .iter()
+            .cloned()
             .map(move |offset| coordinates + offset)
     }
 
