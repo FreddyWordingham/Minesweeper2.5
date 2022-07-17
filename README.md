@@ -1,16 +1,29 @@
 ### Hi there 👋
 
-<!--
-**FreddyWordingham/FreddyWordingham** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+#### Quickstart
 
-Here are some ideas to get you started:
+Download the repository:
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+```shell
+git clone https://github.com/FreddyWordingham/FreddyWordingham.git fw
+cd fw
+```
+
+Compile the game:
+
+```shell
+cargo build --release --target wasm32-unknown-unknown
+wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./app/static/wasm
+```
+
+Setup the webapp:
+
+```shell
+poetry install
+```
+
+Launch the server:
+
+```shell
+poetry run uvicorn app.api.main:app --reload
+```
