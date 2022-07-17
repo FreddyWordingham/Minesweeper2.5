@@ -38,7 +38,7 @@ impl Default for BoardPosition {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BoardOptions {
     /// Tile map size.
-    pub map_size: (u16, u16),
+    pub map_size: (usize, usize),
     /// bomb count.
     pub bomb_count: u16,
     /// Board world position.

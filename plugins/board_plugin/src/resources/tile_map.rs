@@ -28,8 +28,8 @@ pub struct TileMap {
 
 impl TileMap {
     /// Generate an empty map.
-    pub fn empty(width: u16, height: u16) -> Self {
-        let map = Array2::from_elem((width as usize, height as usize), Tile::Empty);
+    pub fn empty(map_size: (usize, usize)) -> Self {
+        let map = Array2::from_elem(map_size, Tile::Empty);
         Self { bomb_count: 0, map }
     }
 
@@ -75,7 +75,7 @@ impl TileMap {
             self.height(),
             self.bomb_count
         );
-        let line: String = (0..=(self.width() + 1)).into_iter().map(|_| '-').collect();
+        let line: String = (0..=(self.width())).into_iter().map(|_| "--").collect();
         buffer = format!("{}{}\n", buffer, line);
 
         for y in 0..self.height() {

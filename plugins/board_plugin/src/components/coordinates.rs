@@ -1,1 +1,1 @@
-pub type Coordinates = nalgebra::Vector2<i8>;
+pub type Coordinates = nalgebra::Point2<i8>;

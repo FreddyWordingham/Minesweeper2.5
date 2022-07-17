@@ -16,7 +16,7 @@ impl Tile {
     #[cfg(feature = "debug")]
     pub fn console_output(&self) -> String {
         format!(
-            "{}",
+            " {}",
             match self {
                 Tile::Bomb => "*".bright_red(),
                 Tile::BombNeighbor(v) => match v {

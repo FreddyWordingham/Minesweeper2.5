@@ -3,7 +3,7 @@ use bevy::prelude::*;
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::WorldInspectorPlugin;
 
-use board_plugin::BoardPlugin;
+use board_plugin::{resources::BoardOptions, BoardPlugin};
 
 fn main() {
     let mut app = App::new();
@@ -11,9 +11,15 @@ fn main() {
         title: "SimRPG!".to_string(),
         width: 600.,
         height: 400.,
-        ..Default::default()
+        ..default()
     })
     .add_plugins(DefaultPlugins)
+    .insert_resource(BoardOptions {
+        map_size: (50, 40),
+        bomb_count: 400,
+        tile_padding: 1.0,
+        ..default()
+    })
     .add_plugin(BoardPlugin)
     .add_system(bevy::input::system::exit_on_esc_system);
     #[cfg(feature = "debug")]
