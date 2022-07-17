@@ -1,4 +1,4 @@
-use std::ops::{Deref, DerefMut};
+use ndarray::Array2;
 
 use crate::resources::tile::Tile;
 
@@ -6,24 +6,14 @@ use crate::resources::tile::Tile;
 #[derive(Debug, Clone)]
 pub struct TileMap {
     bomb_count: u16,
-    height: u16,
-    width: u16,
-    map: Vec<Vec<Tile>>,
+    pub map: Array2<Tile>,
 }
 
 impl TileMap {
     /// Generate an empty map.
     pub fn empty(width: u16, height: u16) -> Self {
-        let map = (0..height)
-            .into_iter()
-            .map(|_| (0..width).into_iter().map(|_| Tile::Empty).collect())
-            .collect();
-        Self {
-            bomb_count: 0,
-            height,
-            width,
-            map,
-        }
+        let map = Array2::from_elem((width as usize, height as usize), Tile::Empty);
+        Self { bomb_count: 0, map }
     }
 
     #[cfg(feature = "debug")]
@@ -45,28 +35,14 @@ impl TileMap {
     }
 
     pub fn width(&self) -> u16 {
-        self.width
+        self.map.shape()[0] as u16
     }
 
     pub fn height(&self) -> u16 {
-        self.height
+        self.map.shape()[1] as u16
     }
 
     pub fn bomb_count(&self) -> u16 {
         self.bomb_count
-    }
-}
-
-impl Deref for TileMap {
-    type Target = Vec<Vec<Tile>>;
-
-    fn deref(&self) -> &Self::Target {
-        &self.map
-    }
-}
-
-impl DerefMut for TileMap {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.map
     }
 }
