@@ -17,7 +17,7 @@ impl Plugin for BoardPlugin {
 impl BoardPlugin {
     /// System to generate the complete board
     pub fn create_board() {
-        let mut tile_map = TileMap::empty(20, 20);
+        let mut tile_map = TileMap::empty(40, 20);
         tile_map.set_bombs(40);
         #[cfg(feature = "debug")]
         log::info!("{}", tile_map.console_output());

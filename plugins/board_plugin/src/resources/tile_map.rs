@@ -81,7 +81,7 @@ impl TileMap {
         if coordinates.x >= self.width() || coordinates.y >= self.height() {
             return false;
         };
-        self.map[(coordinates.y as usize, coordinates.x as usize)].is_bomb()
+        self.map[(coordinates.x as usize, coordinates.y as usize)].is_bomb()
     }
 
     pub fn bomb_count_at(&self, coordinates: Coordinates) -> u8 {
