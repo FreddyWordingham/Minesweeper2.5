@@ -1,4 +1,5 @@
 use ndarray::Array2;
+use rand::{thread_rng, Rng};
 
 use crate::{components::Coordinates, resources::tile::Tile};
 
@@ -83,5 +84,39 @@ impl TileMap {
         self.safe_square_at(coordinates)
             .filter(|coord| self.is_bomb_at(*coord))
             .count() as u8
+    }
+
+    /// Places bombs and bomb neighbor tiles.
+    pub fn set_bombs(&mut self, bomb_count: u16) {
+        self.bomb_count = bomb_count;
+        let mut remaining_bombs = bomb_count;
+        let mut rng = thread_rng();
+
+        // Place bombs
+        while remaining_bombs > 0 {
+            let (x, y) = (
+                rng.gen_range(0..self.width()) as usize,
+                rng.gen_range(0..self.height()) as usize,
+            );
+            if let Tile::Empty = self.map[(x, y)] {
+                self.map[(x, y)] = Tile::Bomb;
+                remaining_bombs -= 1;
+            }
+        }
+
+        // Place bomb neighbors
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let coords = Coordinates { x, y };
+                if self.is_bomb_at(coords) {
+                    continue;
+                }
+                let num = self.bomb_count_at(coords);
+                if num == 0 {
+                    continue;
+                }
+                self.map[(x as usize, y as usize)] = Tile::BombNeighbor(num);
+            }
+        }
     }
 }
