@@ -1,3 +1,4 @@
+use nalgebra::Vector2;
 use ndarray::Array2;
 use rand::{thread_rng, Rng};
 
@@ -7,15 +8,15 @@ use crate::{components::Coordinates, resources::Tile};
 /// [6] [7] [8]
 /// [4]     [5]
 /// [1] [2] [3]
-const SQUARE_COORDINATES: [(i8, i8); 8] = [
-    (-1, -1),
-    (0, -1),
-    (1, -1),
-    (-1, 0),
-    (1, 0),
-    (-1, 1),
-    (0, 1),
-    (1, 1),
+const SQUARE_COORDINATES: [Vector2<i8>; 8] = [
+    Vector2::<i8>::new(-1, -1),
+    Vector2::<i8>::new(0, -1),
+    Vector2::<i8>::new(1, -1),
+    Vector2::<i8>::new(-1, 0),
+    Vector2::<i8>::new(1, 0),
+    Vector2::<i8>::new(-1, 1),
+    Vector2::<i8>::new(0, 1),
+    Vector2::<i8>::new(1, 1),
 ];
 
 /// Base tile map.
@@ -58,12 +59,12 @@ impl TileMap {
         format!("{}{}", buffer, line)
     }
 
-    pub fn width(&self) -> u16 {
-        self.map.shape()[0] as u16
+    pub fn width(&self) -> usize {
+        self.map.shape()[0]
     }
 
-    pub fn height(&self) -> u16 {
-        self.map.shape()[1] as u16
+    pub fn height(&self) -> usize {
+        self.map.shape()[1]
     }
 
     pub fn bomb_count(&self) -> u16 {
@@ -73,12 +74,11 @@ impl TileMap {
     pub fn safe_square_at(&self, coordinates: Coordinates) -> impl Iterator<Item = Coordinates> {
         SQUARE_COORDINATES
             .iter()
-            .copied()
-            .map(move |tuple| coordinates + tuple)
+            .map(move |offset| coordinates + offset)
     }
 
     pub fn is_bomb_at(&self, coordinates: Coordinates) -> bool {
-        if coordinates.x >= self.width() || coordinates.y >= self.height() {
+        if coordinates.x as usize >= self.width() || coordinates.y as usize >= self.height() {
             return false;
         };
         self.map[(coordinates.x as usize, coordinates.y as usize)].is_bomb()
@@ -115,7 +115,7 @@ impl TileMap {
         // Place bomb neighbors
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let coords = Coordinates { x, y };
+                let coords = Coordinates::new(x as i8, y as i8);
                 if self.is_bomb_at(coords) {
                     continue;
                 }
