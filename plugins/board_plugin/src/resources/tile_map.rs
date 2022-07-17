@@ -36,17 +36,25 @@ impl TileMap {
     pub fn console_output(&self) -> String {
         let mut buffer = format!(
             "Map [{}x{}] with {} bombs:\n",
-            self.width, self.height, self.bomb_count
+            self.width(),
+            self.height(),
+            self.bomb_count
         );
-        let line: String = (0..=(self.width + 1)).into_iter().map(|_| '-').collect();
+        let line: String = (0..=(self.width() + 1)).into_iter().map(|_| '-').collect();
         buffer = format!("{}{}\n", buffer, line);
-        for line in self.iter().rev() {
+
+        for y in 0..self.height() {
             buffer = format!("{}|", buffer);
-            for tile in line.iter() {
-                buffer = format!("{}{}", buffer, tile.console_output());
+            for x in 0..self.width() {
+                buffer = format!(
+                    "{}{}",
+                    buffer,
+                    self.map[(x as usize, y as usize)].console_output()
+                );
             }
             buffer = format!("{}|\n", buffer);
         }
+
         format!("{}{}", buffer, line)
     }
 
