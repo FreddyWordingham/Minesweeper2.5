@@ -3,6 +3,8 @@ use bevy::prelude::*;
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::WorldInspectorPlugin;
 
+use board_plugin::BoardPlugin;
+
 fn main() {
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
@@ -12,6 +14,7 @@ fn main() {
         ..Default::default()
     })
     .add_plugins(DefaultPlugins)
+    .add_plugin(BoardPlugin)
     .add_system(bevy::input::system::exit_on_esc_system);
     #[cfg(feature = "debug")]
     app.add_plugin(WorldInspectorPlugin::new());

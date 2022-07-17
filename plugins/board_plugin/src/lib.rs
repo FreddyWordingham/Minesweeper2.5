@@ -1,8 +1,7 @@
 pub mod components;
 pub mod resources;
 
-use bevy::log;
-use bevy::prelude::*;
+use bevy::{log, prelude::*};
 
 use resources::TileMap;
 
