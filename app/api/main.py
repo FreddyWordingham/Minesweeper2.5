@@ -13,9 +13,7 @@ app.include_router(auth_route, prefix="/auth")
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request):
-    return settings.templates.TemplateResponse(
-        "pages/homepage.html", {"request": request}
-    )
+    return settings.templates.TemplateResponse("pages/game.html", {"request": request})
 
 
 @app.get("/login", response_class=HTMLResponse)
