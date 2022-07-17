@@ -11,7 +11,8 @@ fn main() {
         height: 400.,
         ..Default::default()
     })
-    .add_plugins(DefaultPlugins);
+    .add_plugins(DefaultPlugins)
+    .add_system(bevy::input::system::exit_on_esc_system);
     #[cfg(feature = "debug")]
     app.add_plugin(WorldInspectorPlugin::new());
     app.add_startup_system(camera_setup);
