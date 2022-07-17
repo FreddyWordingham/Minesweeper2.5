@@ -1,7 +1,7 @@
 use ndarray::Array2;
 use rand::{thread_rng, Rng};
 
-use crate::{components::Coordinates, resources::tile::Tile};
+use crate::{components::Coordinates, resources::Tile};
 
 /// Delta coordinates for all 8 square neighbors
 /// [6] [7] [8]
