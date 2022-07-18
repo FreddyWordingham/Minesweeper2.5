@@ -18,7 +18,7 @@ fn main() {
     .add_plugins(DefaultPlugins)
     .insert_resource(BoardOptions {
         map_size: (40, 20),
-        bomb_count: 40,
+        bomb_count: 200,
         tile_padding: 1.0,
         ..default()
     })

@@ -4,7 +4,8 @@ pub mod resources;
 use bevy::{log, prelude::*};
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::RegisterInspectable;
-
+#[cfg(feature = "debug")]
+use components::Uncover;
 use components::{Bomb, BombNeighbour, Coordinates};
 use resources::{BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
@@ -16,6 +17,9 @@ impl Plugin for BoardPlugin {
         #[cfg(feature = "debug")]
         {
             app.register_inspectable::<Coordinates>();
+            app.register_inspectable::<BombNeighbour>();
+            app.register_inspectable::<Bomb>();
+            app.register_inspectable::<Uncover>();
         }
         log::info!("Loaded Board Plugin");
     }
