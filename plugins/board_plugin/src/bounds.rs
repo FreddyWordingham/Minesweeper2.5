@@ -7,6 +7,10 @@ pub struct Bounds {
 }
 
 impl Bounds {
+    pub fn new(mins: Vec2, size: Vec2) -> Self {
+        Self { mins, size }
+    }
+
     pub fn in_bounds(&self, coords: Vec2) -> bool {
         coords.x >= self.mins.x
             && coords.y >= self.mins.y
