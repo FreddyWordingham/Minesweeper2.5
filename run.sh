@@ -15,7 +15,9 @@ function compile_wasm() {
 function update_assets() {
     echo "Updating assets...";
     rm -r ./app/static/assets;
+    rm -r ./docs/assets;
     cp -r ./assets ./app/static/;
+    cp -r ./assets ./docs/assets/;
 }
 
 function update_build() {

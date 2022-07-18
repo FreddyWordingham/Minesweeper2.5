@@ -2,47 +2,48 @@
 <html>
     <head>
         <title>Freddy Wordingham</title>
-        <link
-            rel="shortcut icon"
-            type="image/jpg"
-            href="/app/static/icons/fw_favicon.ico"
-        />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
             rel="stylesheet"
             href="http://fonts.googleapis.com/css?family=Raleway"
         />
-        <link
-            rel="stylesheet"
-            href="/app/static/libraries/bootstrap-dist/css/bootstrap.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="/app/static/libraries/bootstrap-icons/bootstrap-icons.css"
-        />
-        <link rel="stylesheet" href="/app/static/styles/base.css" />
-        <script src="/app/static/libraries/jquery-3.6.0.min.js"></script>
-        <script src="/app/static/libraries/bootstrap-dist/js/bootstrap.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+            integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+            crossorigin="anonymous"
+        ></script>
+
+        <style>
+            body {
+                font-family: "Raleway", sans-serif;
+                font-size: 16px;
+                line-height: 1.5;
+                font-weight: 400;
+                color: #212529;
+                background-color: #f8fafc;
+            }
+
+            #container {
+                width: calc(100vw - 16px);
+                height: calc(100vh - 16px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #f5f5f5;
+            }
+        </style>
     </head>
     <body>
-        <div id="wrapper" class="container" style="display: none">
-            <div
-                class="row d-flex align-items-center justify-content-center"
-                style="height: 100vh"
-            >
-                <div class="rounded-3" style="background-color: #fff">
-                    <div class="container-fluid py-5">
-                        <hr />
-                        <div id="display"></div>
-                        <script type="module" type="text/javascript">
-                            import init from "/app/static/wasm/main.js";
-                            init();
-                        </script>
-                        <hr />
-                    </div>
-                </div>
+        <div id="container">
+            <div id="display">
+                <script type="module">
+                    import init from "/wasm/main.js";
+                    init();
+                </script>
             </div>
+            <h1>FW</h1>
         </div>
 
         <script>
