@@ -1,7 +1,7 @@
-pub use board_options::*;
-pub use tile::*;
-pub use tile_map::*;
+pub use board_options::{BoardOptions, BoardPosition, TileSize};
+pub use tile::Tile;
+pub use tile_map::TileMap;
 
-pub mod board_options;
-pub mod tile;
-pub mod tile_map;
+mod board_options;
+mod tile;
+mod tile_map;
