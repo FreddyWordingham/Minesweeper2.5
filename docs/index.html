@@ -1,4 +1,61 @@
-<meta
-    http-equiv="Refresh"
-    content="0; url=/FreddyWordingham/build/html/index.html"
-/>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Freddy Wordingham</title>
+        <link
+            rel="shortcut icon"
+            type="image/jpg"
+            href="/app/static/icons/fw_favicon.ico"
+        />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="http://fonts.googleapis.com/css?family=Raleway"
+        />
+        <link
+            rel="stylesheet"
+            href="/app/static/libraries/bootstrap-dist/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="/app/static/libraries/bootstrap-icons/bootstrap-icons.css"
+        />
+        <link rel="stylesheet" href="/app/static/styles/base.css" />
+        <script src="/app/static/libraries/jquery-3.6.0.min.js"></script>
+        <script src="/app/static/libraries/bootstrap-dist/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div id="wrapper" class="container" style="display: none">
+            <div
+                class="row d-flex align-items-center justify-content-center"
+                style="height: 100vh"
+            >
+                <div class="rounded-3" style="background-color: #fff">
+                    <div class="container-fluid py-5">
+                        <hr />
+                        <div id="display"></div>
+                        <script type="module">
+                            import init from "/app/static/wasm/main.js";
+                            init();
+                        </script>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                let init_display = setInterval(function () {
+                    let canvas = $("body").children("canvas");
+
+                    if (canvas.length > 0) {
+                        canvas.detach().appendTo("#display").slideDown();
+                        clearInterval(init_display);
+                    }
+                }, 100);
+            });
+        </script>
+    </body>
+</html>
