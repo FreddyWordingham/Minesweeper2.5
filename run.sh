@@ -4,7 +4,7 @@
 
 echo "Compiling game..."
 cargo build --release --target wasm32-unknown-unknown
-wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./app/static/wasm
+wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./app/static/wasm --no-typescript
 
 echo "Copying assets..."
 rm -r ./app/static/assets

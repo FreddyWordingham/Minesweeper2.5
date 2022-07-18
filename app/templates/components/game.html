@@ -1,0 +1,25 @@
+<style>
+    canvas {
+        display: none;
+    }
+</style>
+
+<div id="display"></div>
+
+<script type="module">
+    import init from "/static/wasm/main.js";
+    init();
+</script>
+
+<script>
+    $(document).ready(function () {
+        let init_display = setInterval(function () {
+            let canvas = $("body").children("canvas");
+
+            if (canvas.length > 0) {
+                canvas.detach().appendTo("#display").slideDown();
+                clearInterval(init_display);
+            }
+        }, 100);
+    });
+</script>

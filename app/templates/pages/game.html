@@ -1,20 +1,11 @@
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <style>
-            body {
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            canvas {
-                background-color: white;
-            }
-        </style>
-    </head>
-    <script type="module">
-        import init from "/static/wasm/main.js";
-        init();
-    </script>
-</html>
+{% extends "base.html" %} {% block content %}
+
+<div class="rounded-3" style="background-color: #fff">
+    <div class="container-fluid py-5">
+        <hr />
+        {% include "components/game.html" %}
+        <hr />
+    </div>
+</div>
+
+{% endblock %}
