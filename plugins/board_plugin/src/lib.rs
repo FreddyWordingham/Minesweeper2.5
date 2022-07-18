@@ -167,10 +167,12 @@ impl BoardPlugin {
             count.to_string(),
             match count {
                 1 => Color::WHITE,
-                2 => Color::GREEN,
-                3 => Color::YELLOW,
-                4 => Color::ORANGE,
-                _ => Color::PURPLE,
+                2 => Color::CYAN,
+                3 => Color::GREEN,
+                4 => Color::YELLOW,
+                5 => Color::ORANGE,
+                6 => Color::PURPLE,
+                _ => Color::RED,
             },
         );
 
