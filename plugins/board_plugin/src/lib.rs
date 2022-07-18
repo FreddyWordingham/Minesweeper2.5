@@ -2,13 +2,14 @@ pub mod bounds;
 pub mod components;
 pub mod resources;
 
-use bevy::{log, prelude::*};
+use bevy::{log, math::Vec3Swizzles, prelude::*};
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::RegisterInspectable;
+use bounds::Bounds;
 #[cfg(feature = "debug")]
 use components::Uncover;
 use components::{Bomb, BombNeighbour, Coordinates};
-use resources::{BoardOptions, BoardPosition, Tile, TileMap, TileSize};
+use resources::{Board, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
 pub struct BoardPlugin;
 
@@ -63,7 +64,7 @@ impl BoardPlugin {
         );
         log::info!("board size: {}", board_size);
         // We define the board anchor position (bottom left)
-        let board_position = match options.position {
+        let board_mins = match options.position {
             BoardPosition::Centered(offset) => {
                 Vec3::new(-board_size.x * 0.5, -board_size.y * 0.5, 0.0) + offset
             }
@@ -73,7 +74,7 @@ impl BoardPlugin {
         commands
             .spawn()
             .insert(Name::new("Board"))
-            .insert(Transform::from_translation(board_position))
+            .insert(Transform::from_translation(board_mins))
             .insert(GlobalTransform::default())
             .with_children(|parent| {
                 parent
@@ -99,6 +100,15 @@ impl BoardPlugin {
                     font,
                 )
             });
+
+        commands.insert_resource(Board {
+            tile_map,
+            bounds: Bounds {
+                mins: board_mins.xy(),
+                size: board_size,
+            },
+            tile_size,
+        });
     }
 
     /// Spawn the tiles.

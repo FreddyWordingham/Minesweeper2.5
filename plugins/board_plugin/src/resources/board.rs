@@ -1,6 +1,6 @@
 use crate::bounds::Bounds;
 use crate::{Coordinates, TileMap};
-use bevy::prelude::*;
+use bevy::prelude::{Vec2, Window};
 
 #[derive(Debug)]
 pub struct Board {
@@ -14,7 +14,7 @@ impl Board {
     pub fn mouse_position(&self, window: &Window, position: Vec2) -> Option<Coordinates> {
         // Window to world space
         let window_size = Vec2::new(window.width(), window.height());
-        let position = position - window_size / 2.;
+        let position = position - window_size * 0.5;
 
         // Bounds check
         if !self.bounds.in_bounds(position) {
