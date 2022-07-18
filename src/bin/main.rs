@@ -7,16 +7,16 @@ use board_plugin::{resources::BoardOptions, BoardPlugin};
 
 fn main() {
     let mut app = App::new();
-    #[cfg(feature = "debug")]
-    app.add_plugin(WorldInspectorPlugin::new());
     app.insert_resource(WindowDescriptor {
         title: "SimRPG!".to_string(),
         width: 1200.,
         height: 800.,
         ..default()
     })
-    .add_plugins(DefaultPlugins)
-    .insert_resource(BoardOptions {
+    .add_plugins(DefaultPlugins);
+    #[cfg(feature = "debug")]
+    app.add_plugin(WorldInspectorPlugin::new());
+    app.insert_resource(BoardOptions {
         map_size: (40, 20),
         bomb_count: 200,
         tile_padding: 1.0,
