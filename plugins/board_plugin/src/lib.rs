@@ -21,7 +21,11 @@ impl BoardPlugin {
         mut commands: Commands,
         board_options: Option<Res<BoardOptions>>,
         window: Res<WindowDescriptor>,
+        asset_server: Res<AssetServer>,
     ) {
+        let font: Handle<Font> = asset_server.load("fonts/pixeled.ttf");
+        let bomb_image: Handle<Image> = asset_server.load("sprites/bomb.png");
+
         let options = match board_options {
             None => BoardOptions::default(),
             Some(o) => o.clone(),

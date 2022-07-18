@@ -1,8 +1,5 @@
 [tool.poetry]
 name = "freddy_wordingham"
-packages = [
-    { include = "freddy_wordingham", from = "lib" },
-]
 version = "0.1.0"
 description = "Personal website and playground"
 authors = ["Freddy Wordingham"]
