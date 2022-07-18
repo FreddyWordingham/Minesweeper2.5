@@ -1,3 +1,1 @@
-### Hi there 👋
-
-<iframe src="https://freddywordingham.github.io/FreddyWordingham/index.html"></iframe>
+[![Game](resources/game.png)](https://freddywordingham.github.io/FreddyWordingham/index.html)
