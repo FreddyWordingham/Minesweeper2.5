@@ -7,6 +7,8 @@ use board_plugin::{resources::BoardOptions, BoardPlugin};
 
 fn main() {
     let mut app = App::new();
+    #[cfg(feature = "debug")]
+    app.add_plugin(WorldInspectorPlugin::new());
     app.insert_resource(WindowDescriptor {
         title: "SimRPG!".to_string(),
         width: 1200.,
@@ -22,8 +24,6 @@ fn main() {
     })
     .add_plugin(BoardPlugin)
     .add_system(bevy::input::system::exit_on_esc_system);
-    #[cfg(feature = "debug")]
-    app.add_plugin(WorldInspectorPlugin::new());
     app.add_startup_system(camera_setup);
 
     app.run();

@@ -2,15 +2,21 @@ pub mod components;
 pub mod resources;
 
 use bevy::{log, prelude::*};
+#[cfg(feature = "debug")]
+use bevy_inspector_egui::RegisterInspectable;
 
-use components::Coordinates;
-use resources::{BoardOptions, BoardPosition, TileMap, TileSize};
+use components::{Bomb, BombNeighbour, Coordinates};
+use resources::{BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
 pub struct BoardPlugin;
 
 impl Plugin for BoardPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system(Self::create_board);
+        #[cfg(feature = "debug")]
+        {
+            app.register_inspectable::<Coordinates>();
+        }
         log::info!("Loaded Board Plugin");
     }
 }
@@ -23,8 +29,8 @@ impl BoardPlugin {
         window: Res<WindowDescriptor>,
         asset_server: Res<AssetServer>,
     ) {
-        let font: Handle<Font> = asset_server.load("fonts/pixeled.ttf");
-        let bomb_image: Handle<Image> = asset_server.load("sprites/bomb.png");
+        let font = asset_server.load("fonts/pixeled.ttf");
+        let bomb_image = asset_server.load("sprites/bomb.png");
 
         let options = match board_options {
             None => BoardOptions::default(),
@@ -78,32 +84,113 @@ impl BoardPlugin {
                     .insert(Name::new("Background"));
             })
             .with_children(|parent| {
-                for y in 0..tile_map.height() {
-                    for x in 0..tile_map.width() {
-                        parent
-                            .spawn_bundle(SpriteBundle {
-                                sprite: Sprite {
-                                    color: Color::GRAY,
-                                    custom_size: Some(Vec2::splat(
-                                        tile_size - options.tile_padding as f32,
-                                    )),
-                                    ..default()
-                                },
-                                transform: Transform::from_xyz(
-                                    (x as f32 * tile_size) + (tile_size * 0.5),
-                                    (y as f32 * tile_size) + (tile_size * 0.5),
-                                    1.,
-                                ),
-                                ..default()
-                            })
-                            .insert(Name::new(format!("Tile ({}, {})", x, y)))
-                            .insert(Coordinates::new(x as u16, y as u16));
-                    }
-                }
+                Self::spawn_tiles(
+                    parent,
+                    &tile_map,
+                    tile_size,
+                    options.tile_padding,
+                    Color::GRAY,
+                    bomb_image,
+                    font,
+                )
             });
     }
 
-    /// Computes a tile size that matches the window according to the tile map size
+    /// Spawn the tiles.
+    fn spawn_tiles(
+        parent: &mut ChildBuilder,
+        tile_map: &TileMap,
+        tile_size: f32,
+        tile_padding: f32,
+        colour: Color,
+        bomb_image: Handle<Image>,
+        font: Handle<Font>,
+    ) {
+        for y in 0..tile_map.height() {
+            for x in 0..tile_map.width() {
+                let mut cmd = parent.spawn();
+
+                cmd.insert_bundle(SpriteBundle {
+                    sprite: Sprite {
+                        color: colour,
+                        custom_size: Some(Vec2::splat(tile_size - tile_padding)),
+                        ..default()
+                    },
+                    transform: Transform::from_xyz(
+                        (x as f32 * tile_size) + (tile_size * 0.5),
+                        (y as f32 * tile_size) + (tile_size * 0.5),
+                        1.,
+                    ),
+                    ..default()
+                })
+                .insert(Name::new(format!("Tile ({}, {})", x, y)))
+                .insert(Coordinates::new(x as u16, y as u16));
+
+                match tile_map.map()[(x, y)] {
+                    Tile::Bomb => {
+                        cmd.insert(Bomb);
+                        cmd.with_children(|parent| {
+                            parent.spawn_bundle(SpriteBundle {
+                                sprite: Sprite {
+                                    custom_size: Some(Vec2::splat(tile_size - tile_padding)),
+                                    ..Default::default()
+                                },
+                                transform: Transform::from_xyz(0., 0., 1.),
+                                texture: bomb_image.clone(),
+                                ..Default::default()
+                            });
+                        });
+                    }
+                    Tile::BombNeighbor(count) => {
+                        cmd.insert(BombNeighbour::new(count));
+                        cmd.with_children(|parent| {
+                            parent.spawn_bundle(Self::bomb_count_text_bundle(
+                                count,
+                                font.clone(),
+                                tile_size - tile_padding,
+                            ));
+                        });
+                    }
+                    Tile::Empty => (),
+                }
+            }
+        }
+    }
+
+    /// Generates the bomb counter text 2D Bundle for a given value.
+    fn bomb_count_text_bundle(count: u8, font: Handle<Font>, size: f32) -> Text2dBundle {
+        let (text, color) = (
+            count.to_string(),
+            match count {
+                1 => Color::WHITE,
+                2 => Color::GREEN,
+                3 => Color::YELLOW,
+                4 => Color::ORANGE,
+                _ => Color::PURPLE,
+            },
+        );
+
+        Text2dBundle {
+            text: Text {
+                sections: vec![TextSection {
+                    value: text,
+                    style: TextStyle {
+                        color,
+                        font,
+                        font_size: size,
+                    },
+                }],
+                alignment: TextAlignment {
+                    vertical: VerticalAlign::Center,
+                    horizontal: HorizontalAlign::Center,
+                },
+            },
+            transform: Transform::from_xyz(0.0, 0.0, 1.0),
+            ..default()
+        }
+    }
+
+    /// Computes a tile size that matches the window according to the tile map size.
     fn adaptative_tile_size(
         window: Res<WindowDescriptor>,
         (min, max): (f32, f32),

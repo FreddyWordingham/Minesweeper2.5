@@ -3,7 +3,10 @@ use bevy::prelude::Component;
 /// Bomb neighbor component
 #[cfg_attr(feature = "debug", derive(bevy_inspector_egui::Inspectable))]
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Component)]
-pub struct BombNeighbour {
-    /// Number of neighbor bombs
-    pub count: u8,
+pub struct BombNeighbour(u8);
+
+impl BombNeighbour {
+    pub fn new(count: u8) -> Self {
+        Self(count)
+    }
 }
