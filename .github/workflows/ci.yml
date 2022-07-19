@@ -86,6 +86,9 @@ jobs:
               with:
                   toolchain: stable
 
+            - name: Add Rust WASM
+              run: rustup target add wasm32-unknown-unknown;
+
             - name: Set up WASM
               uses: jetli/wasm-bindgen-action@v0.1.0
               with:
