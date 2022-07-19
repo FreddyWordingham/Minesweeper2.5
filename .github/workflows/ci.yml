@@ -23,12 +23,14 @@ jobs:
               with:
                   fetch-depth: 2
 
-            - name: Rust compilation
+            - name: Rust check
               uses: actions-rs/toolchain@v1
               with:
                   toolchain: stable
                   components: clippy
-            - run: cargo check
+            - run: |
+                  cargo check
+                  cargo clippy
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
@@ -82,12 +84,14 @@ jobs:
               with:
                   fetch-depth: 2
 
-            - name: Rust compilation
+            - name: Rust check
               uses: actions-rs/toolchain@v1
               with:
                   toolchain: stable
                   components: clippy
-            - run: cargo check
+            - run: |
+                  cargo check
+                  cargo clippy
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
@@ -141,12 +145,14 @@ jobs:
               with:
                   fetch-depth: 2
 
-            - name: Rust compilation
+            - name: Rust check
               uses: actions-rs/toolchain@v1
               with:
                   toolchain: stable
                   components: clippy
-            - run: cargo check
+            - run: |
+                  cargo check
+                  cargo clippy
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
@@ -183,3 +189,53 @@ jobs:
 
             - name: Testing
               run: poetry run pytest --cache-clear --cov=lib ./tests/
+
+    update-documentation:
+        needs: macOS-latest
+        runs-on: macOS-latest
+        strategy:
+            matrix:
+                os:
+                    - macOS-latest
+                python-version:
+                    - 3.9
+            fail-fast: false
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 2
+
+            - name: Rust compilation
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+              run: cargo build --release --target wasm32-unknown-unknown;
+
+            - name: Rust compilation
+              uses: jetli/wasm-bindgen-action@v0.1.0
+              with:
+                  version: "latest"
+              run: wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./app/static/wasm --no-typescript;
+
+            - name: Update game
+              run: |
+                  rm -r ./app/static/assets;
+                  rm -r ./docs/assets;
+                  rm -r ./docs/wasm;
+                  cp -r ./assets ./app/static/;
+                  cp -r ./assets ./docs/assets/;
+                  cp -r ./app/static/wasm ./docs;
+
+            - name: Commit files
+              run: |
+                  git add --force docs/*
+                  git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
+                  git commit -m "CI: Automated update push" -a | exit 0
+
+            - name: Push changes
+              if: github.ref == 'refs/heads/main'
+              uses: ad-m/github-push-action@master
+              with:
+                  github_token: ${{ secrets.UPDATE }}
