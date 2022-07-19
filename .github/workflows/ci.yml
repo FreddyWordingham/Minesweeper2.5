@@ -19,6 +19,12 @@ jobs:
               with:
                   fetch-depth: 2
 
+            - name: Rust compilation
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+            - run: cargo build --release --all-features
+
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
               with:
