@@ -2,7 +2,7 @@
 name: Continuous Integration
 
 on:
-    pull_request:
+    push:
         branches:
             - "main"
             - "dev"
@@ -95,7 +95,7 @@ jobs:
               run: cargo build --release --target wasm32-unknown-unknown;
 
             - name: Generate WASM bindings
-              run: wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./app/static/wasm --no-typescript;
+              run: wasm-bindgen --target web ./target/wasm32-unknown-unknown/release/main.wasm --out-dir ./docs/wasm --no-typescript;
 
             - name: Update game
               run: |
