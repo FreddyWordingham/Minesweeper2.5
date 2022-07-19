@@ -103,8 +103,7 @@ jobs:
             - name: Update game
               run: |
                   rm -r ./app/static/assets;
-                  rm -r ./docs/assets;
-                  rm -r ./docs/wasm;
+                  rm -r ./docs/*;
                   cp -r ./assets ./app/static/;
                   cp -r ./assets ./docs/assets/;
                   cp -r ./app/static/wasm ./docs;
