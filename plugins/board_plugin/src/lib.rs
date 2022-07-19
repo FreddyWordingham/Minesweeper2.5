@@ -1,6 +1,7 @@
 pub mod bounds;
 pub mod components;
 pub mod resources;
+pub mod systems;
 
 use bevy::{log, math::Vec3Swizzles, prelude::*};
 #[cfg(feature = "debug")]
@@ -15,7 +16,8 @@ pub struct BoardPlugin;
 
 impl Plugin for BoardPlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system(Self::create_board);
+        app.add_startup_system(Self::create_board)
+            .add_system(systems::input::input_handling);
         #[cfg(feature = "debug")]
         {
             app.register_inspectable::<Coordinates>();
