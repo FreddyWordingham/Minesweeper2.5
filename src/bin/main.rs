@@ -5,7 +5,23 @@ use bevy_inspector_egui::WorldInspectorPlugin;
 
 use board_plugin::{resources::BoardOptions, BoardPlugin};
 
+// use wasm_bindgen::prelude::*;
+
+// #[wasm_bindgen(module = "/src/bin/main.js")]
+// extern "C" {
+//     fn name() -> String;
+// }
+
+// // lifted from the `console_log` example
+// #[wasm_bindgen]
+// extern "C" {
+//     #[wasm_bindgen(js_namespace = console)]
+//     fn log(s: &str);
+// }
+
 fn main() {
+    // log(&format!("Hello! {}", name()));
+
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
         title: "SimRPG!".to_string(),
