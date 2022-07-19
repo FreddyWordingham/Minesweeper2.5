@@ -3,7 +3,6 @@
 #![warn(
     clippy::all,
     clippy::cargo,
-    clippy::missing_docs_in_private_items,
     clippy::nursery,
     clippy::pedantic,
     clippy::restriction
@@ -24,7 +23,9 @@
     clippy::indexing_slicing,
     clippy::integer_arithmetic,
     clippy::integer_division,
+    clippy::missing_docs_in_private_items,
     clippy::missing_panics_doc,
+    clippy::mod_module_files,
     clippy::module_name_repetitions,
     clippy::modulo_arithmetic,
     clippy::multiple_crate_versions,
@@ -32,6 +33,9 @@
     clippy::panic_in_result_fn,
     clippy::panic,
     clippy::print_stdout,
+    clippy::pub_use,
+    clippy::shadow_reuse,
+    clippy::shadow_unrelated,
     clippy::unreachable,
     clippy::unwrap_used
 )]
