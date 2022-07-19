@@ -11,6 +11,7 @@ pub struct Board {
 
 impl Board {
     /// Translates a mouse position to board coordinates
+    #[must_use]
     pub fn mouse_position(&self, window: &Window, position: Vec2) -> Option<Coordinates> {
         // Window to world space
         let window_size = Vec2::new(window.width(), window.height());

@@ -3,7 +3,7 @@
     clippy::cargo,
 //     clippy::missing_docs_in_private_items,
     clippy::nursery,
-//     clippy::pedantic,
+    clippy::pedantic,
 //     clippy::restriction
 )]
 #![allow(
@@ -67,6 +67,7 @@ impl Plugin for BoardPlugin {
 
 impl BoardPlugin {
     /// System to generate the complete board
+    #[allow(clippy::needless_pass_by_value)]
     pub fn create_board(
         mut commands: Commands,
         board_options: Option<Res<BoardOptions>>,
@@ -90,7 +91,7 @@ impl BoardPlugin {
         let tile_size = match options.tile_size {
             TileSize::Fixed(v) => v,
             TileSize::Adaptive { min, max } => Self::adaptative_tile_size(
-                window,
+                &window,
                 (min, max),
                 (tile_map.width(), tile_map.height()),
             ),
@@ -134,9 +135,9 @@ impl BoardPlugin {
                     tile_size,
                     options.tile_padding,
                     Color::GRAY,
-                    bomb_image,
-                    font,
-                )
+                    &bomb_image,
+                    &font,
+                );
             });
 
         commands.insert_resource(Board {
@@ -156,8 +157,8 @@ impl BoardPlugin {
         tile_size: f32,
         tile_padding: f32,
         colour: Color,
-        bomb_image: Handle<Image>,
-        font: Handle<Font>,
+        bomb_image: &Handle<Image>,
+        font: &Handle<Font>,
     ) {
         for y in 0..tile_map.height() {
             for x in 0..tile_map.width() {
@@ -247,7 +248,7 @@ impl BoardPlugin {
 
     /// Computes a tile size that matches the window according to the tile map size.
     fn adaptative_tile_size(
-        window: Res<WindowDescriptor>,
+        window: &Res<WindowDescriptor>,
         (min, max): (f32, f32),
         (board_width, board_height): (usize, usize),
     ) -> f32 {

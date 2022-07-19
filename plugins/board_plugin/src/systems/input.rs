@@ -3,6 +3,7 @@ use bevy::input::{mouse::MouseButtonInput, ElementState};
 use bevy::log;
 use bevy::prelude::*;
 
+#[allow(clippy::needless_pass_by_value)]
 pub fn input_handling(
     windows: Res<Windows>,
     board: Res<Board>,

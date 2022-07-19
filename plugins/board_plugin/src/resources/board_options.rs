@@ -30,7 +30,7 @@ pub enum BoardPosition {
 
 impl Default for BoardPosition {
     fn default() -> Self {
-        Self::Centered(Default::default())
+        Self::Centered(Vec3::default())
     }
 }
 
@@ -56,8 +56,8 @@ impl Default for BoardOptions {
         Self {
             map_size: (15, 15),
             bomb_count: 30,
-            position: Default::default(),
-            tile_size: Default::default(),
+            position: BoardPosition::default(),
+            tile_size: TileSize::default(),
             tile_padding: 0.,
             safe_start: false,
         }

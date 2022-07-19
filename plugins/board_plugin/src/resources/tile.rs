@@ -9,10 +9,12 @@ pub enum Tile {
 }
 
 impl Tile {
+    #[must_use]
     pub const fn is_bomb(&self) -> bool {
         matches!(self, Self::Bomb)
     }
 
+    #[must_use]
     #[cfg(feature = "debug")]
     pub fn console_output(&self) -> String {
         format!(
