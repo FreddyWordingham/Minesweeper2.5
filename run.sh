@@ -37,6 +37,7 @@ function launch_server() {
 }
 
 # download_repo
+
 compile_wasm &
 DEPS_PID=$!;
 install_webapp
