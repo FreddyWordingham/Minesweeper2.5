@@ -1,38 +1,38 @@
-// #![warn(
-//     clippy::all,
-//     clippy::cargo,
+#![warn(
+    clippy::all,
+    clippy::cargo,
 //     clippy::missing_docs_in_private_items,
-//     clippy::nursery,
+    clippy::nursery,
 //     clippy::pedantic,
 //     clippy::restriction
-// )]
-// #![allow(
-//     clippy::as_conversions,
-//     clippy::blanket_clippy_restriction_lints,
-//     clippy::cast_possible_truncation,
-//     clippy::cast_possible_wrap,
-//     clippy::cast_precision_loss,
-//     clippy::cast_sign_loss,
-//     clippy::default_numeric_fallback,
-//     clippy::else_if_without_else,
-//     clippy::exhaustive_enums,
-//     clippy::exhaustive_structs,
-//     clippy::float_arithmetic,
-//     clippy::implicit_return,
-//     clippy::indexing_slicing,
-//     clippy::integer_arithmetic,
-//     clippy::integer_division,
-//     clippy::missing_panics_doc,
-//     clippy::module_name_repetitions,
-//     clippy::modulo_arithmetic,
-//     clippy::multiple_crate_versions,
-//     clippy::multiple_inherent_impl,
-//     clippy::panic_in_result_fn,
-//     clippy::panic,
-//     clippy::print_stdout,
-//     clippy::unreachable,
-//     clippy::unwrap_used
-// )]
+)]
+#![allow(
+    clippy::as_conversions,
+    clippy::blanket_clippy_restriction_lints,
+    clippy::cast_possible_truncation,
+    clippy::cast_possible_wrap,
+    clippy::cast_precision_loss,
+    clippy::cast_sign_loss,
+    clippy::default_numeric_fallback,
+    clippy::else_if_without_else,
+    clippy::exhaustive_enums,
+    clippy::exhaustive_structs,
+    clippy::float_arithmetic,
+    clippy::implicit_return,
+    clippy::indexing_slicing,
+    clippy::integer_arithmetic,
+    clippy::integer_division,
+    clippy::missing_panics_doc,
+    clippy::module_name_repetitions,
+    clippy::modulo_arithmetic,
+    clippy::multiple_crate_versions,
+    clippy::multiple_inherent_impl,
+    clippy::panic_in_result_fn,
+    clippy::panic,
+    clippy::print_stdout,
+    clippy::unreachable,
+    clippy::unwrap_used
+)]
 
 pub mod bounds;
 pub mod components;
@@ -170,9 +170,9 @@ impl BoardPlugin {
                         ..default()
                     },
                     transform: Transform::from_xyz(
-                        (x as f32 * tile_size) + (tile_size * 0.5),
-                        (y as f32 * tile_size) + (tile_size * 0.5),
-                        1.,
+                        (x as f32).mul_add(tile_size, tile_size * 0.5),
+                        (y as f32).mul_add(tile_size, tile_size * 0.5),
+                        1.0,
                     ),
                     ..default()
                 })

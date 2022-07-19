@@ -6,7 +6,7 @@ use bevy::prelude::Component;
 pub struct BombNeighbour(u8);
 
 impl BombNeighbour {
-    pub fn new(count: u8) -> Self {
+    pub const fn new(count: u8) -> Self {
         Self(count)
     }
 }

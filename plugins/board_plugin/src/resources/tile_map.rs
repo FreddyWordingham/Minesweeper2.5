@@ -44,7 +44,7 @@ impl TileMap {
                 rng.gen_range(0..self.width()) as usize,
                 rng.gen_range(0..self.height()) as usize,
             );
-            if let Tile::Empty = self.map[(x, y)] {
+            if Tile::Empty == self.map[(x, y)] {
                 self.map[(x, y)] = Tile::Bomb;
                 remaining_bombs -= 1;
             }
@@ -100,11 +100,11 @@ impl TileMap {
         self.map.shape()[1]
     }
 
-    pub fn bomb_count(&self) -> u16 {
+    pub const fn bomb_count(&self) -> u16 {
         self.bomb_count
     }
 
-    pub fn map(&self) -> &Array2<Tile> {
+    pub const fn map(&self) -> &Array2<Tile> {
         &self.map
     }
 

@@ -7,7 +7,7 @@ pub struct Bounds {
 }
 
 impl Bounds {
-    pub fn new(mins: Vec2, size: Vec2) -> Self {
+    pub const fn new(mins: Vec2, size: Vec2) -> Self {
         Self { mins, size }
     }
 
