@@ -1,10 +1,9 @@
 #![warn(
     clippy::all,
     clippy::cargo,
-//     clippy::missing_docs_in_private_items,
     clippy::nursery,
     clippy::pedantic,
-//     clippy::restriction
+    clippy::restriction
 )]
 #![allow(
     clippy::as_conversions,
@@ -22,7 +21,9 @@
     clippy::indexing_slicing,
     clippy::integer_arithmetic,
     clippy::integer_division,
+    clippy::missing_docs_in_private_items,
     clippy::missing_panics_doc,
+    clippy::mod_module_files,
     clippy::module_name_repetitions,
     clippy::modulo_arithmetic,
     clippy::multiple_crate_versions,
@@ -30,6 +31,9 @@
     clippy::panic_in_result_fn,
     clippy::panic,
     clippy::print_stdout,
+    clippy::pub_use,
+    clippy::shadow_reuse,
+    clippy::shadow_unrelated,
     clippy::unreachable,
     clippy::unwrap_used
 )]
@@ -51,6 +55,7 @@ use resources::{Board, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 pub struct BoardPlugin;
 
 impl Plugin for BoardPlugin {
+    #[inline]
     fn build(&self, app: &mut App) {
         app.add_startup_system(Self::create_board)
             .add_system(systems::input::input_handling);
@@ -67,6 +72,7 @@ impl Plugin for BoardPlugin {
 
 impl BoardPlugin {
     /// System to generate the complete board
+    #[inline]
     #[allow(clippy::needless_pass_by_value)]
     pub fn create_board(
         mut commands: Commands,

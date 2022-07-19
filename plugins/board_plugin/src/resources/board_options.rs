@@ -11,6 +11,7 @@ pub enum TileSize {
 }
 
 impl Default for TileSize {
+    #[inline]
     fn default() -> Self {
         Self::Adaptive {
             min: 10.0,
@@ -29,6 +30,7 @@ pub enum BoardPosition {
 }
 
 impl Default for BoardPosition {
+    #[inline]
     fn default() -> Self {
         Self::Centered(Vec3::default())
     }
@@ -52,6 +54,7 @@ pub struct BoardOptions {
 }
 
 impl Default for BoardOptions {
+    #[inline]
     fn default() -> Self {
         Self {
             map_size: (15, 15),

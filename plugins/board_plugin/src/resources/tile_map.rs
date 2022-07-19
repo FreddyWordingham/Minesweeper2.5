@@ -27,6 +27,7 @@ pub struct TileMap {
 
 impl TileMap {
     /// Generate an empty map.
+    #[inline]
     #[must_use]
     pub fn empty(map_size: (usize, usize)) -> Self {
         let map = Array2::from_elem(map_size, Tile::Empty);
@@ -34,6 +35,7 @@ impl TileMap {
     }
 
     /// Places bombs and bomb neighbor tiles.
+    #[inline]
     pub fn set_bombs(&mut self, bomb_count: u16) {
         self.bomb_count = bomb_count;
         let mut remaining_bombs = bomb_count;
@@ -93,26 +95,31 @@ impl TileMap {
         format!("{}{}", buffer, line)
     }
 
+    #[inline]
     #[must_use]
     pub fn width(&self) -> usize {
         self.map.shape()[0]
     }
 
+    #[inline]
     #[must_use]
     pub fn height(&self) -> usize {
         self.map.shape()[1]
     }
 
+    #[inline]
     #[must_use]
     pub const fn bomb_count(&self) -> u16 {
         self.bomb_count
     }
 
+    #[inline]
     #[must_use]
     pub const fn map(&self) -> &Array2<Tile> {
         &self.map
     }
 
+    #[inline]
     pub fn safe_square_at(coordinates: Coordinates) -> impl Iterator<Item = Coordinates> {
         SQUARE_COORDINATES
             .iter()
@@ -120,6 +127,7 @@ impl TileMap {
             .map(move |offset| coordinates + offset)
     }
 
+    #[inline]
     #[must_use]
     pub fn is_bomb_at(&self, coordinates: Coordinates) -> bool {
         if coordinates.x as usize >= self.width() || coordinates.y as usize >= self.height() {
@@ -128,6 +136,7 @@ impl TileMap {
         self.map[(coordinates.x as usize, coordinates.y as usize)].is_bomb()
     }
 
+    #[inline]
     #[must_use]
     pub fn bomb_count_at(&self, coordinates: Coordinates) -> u8 {
         if self.is_bomb_at(coordinates) {

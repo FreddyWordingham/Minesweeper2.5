@@ -3,6 +3,7 @@ use bevy::input::{mouse::MouseButtonInput, ElementState};
 use bevy::log;
 use bevy::prelude::*;
 
+#[inline]
 #[allow(clippy::needless_pass_by_value)]
 pub fn input_handling(
     windows: Res<Windows>,
@@ -27,7 +28,7 @@ pub fn input_handling(
                             log::info!("Trying to mark tile on {}", coordinates);
                             // TODO: generate an event
                         }
-                        _ => (),
+                        MouseButton::Middle | MouseButton::Other(_) => (),
                     }
                 }
             }

@@ -11,6 +11,7 @@ pub struct Coordinates {
 }
 
 impl Coordinates {
+    #[inline]
     #[must_use]
     pub const fn new(x: u16, y: u16) -> Self {
         Self { x, y }
@@ -18,6 +19,7 @@ impl Coordinates {
 }
 
 impl From<(u16, u16)> for Coordinates {
+    #[inline]
     fn from((x, y): (u16, u16)) -> Self {
         Self { x, y }
     }
@@ -26,6 +28,7 @@ impl From<(u16, u16)> for Coordinates {
 impl Add for Coordinates {
     type Output = Self;
 
+    #[inline]
     fn add(self, rhs: Self) -> Self::Output {
         Self {
             x: self.x + rhs.x,
@@ -37,6 +40,7 @@ impl Add for Coordinates {
 impl Add<(i8, i8)> for Coordinates {
     type Output = Self;
 
+    #[inline]
     fn add(self, (x, y): (i8, i8)) -> Self::Output {
         let x = ((self.x as i16) + i16::from(x)) as u16;
         let y = ((self.y as i16) + i16::from(y)) as u16;
@@ -47,6 +51,7 @@ impl Add<(i8, i8)> for Coordinates {
 impl Sub for Coordinates {
     type Output = Self;
 
+    #[inline]
     fn sub(self, rhs: Self) -> Self::Output {
         Self {
             x: self.x.saturating_sub(rhs.x),
@@ -56,6 +61,7 @@ impl Sub for Coordinates {
 }
 
 impl Display for Coordinates {
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "({}, {})", self.x, self.y)
     }
