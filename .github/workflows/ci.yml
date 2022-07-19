@@ -1,7 +1,11 @@
 ---
 name: Continuous Integration
 
-on: [push, pull_request]
+on:
+    pull_request:
+        branches:
+            - "main"
+            - "dev"
 
 jobs:
     ubuntu-tests:
