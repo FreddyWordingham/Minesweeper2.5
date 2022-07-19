@@ -1,7 +1,17 @@
 [package]
 name = "fw"
 version = "0.1.0"
+authors = ["Freddy Wordingham <f.wordingham@databound.co.uk>"]
 edition = "2021"
+description = "Simulation AI playground"
+repository = "https://github.com/FreddyWordingham/FreddyWordingham"
+readme = "README.md"
+license = "MIT"
+keywords = ["simulation", "machine-learning", "ai"]
+categories = ["science", "simulation", "ai"]
+documentation = "https://FreddyWordingham.github.io/FreddyWordingham"
+exclude = ["app/", "resources/", "tests/", "assets/", "docs/"]
+
 
 [features]
 default = []

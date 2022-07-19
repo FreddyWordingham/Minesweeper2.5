@@ -1,7 +1,15 @@
 [package]
 name = "board_plugin"
 version = "0.1.0"
+authors = ["Freddy Wordingham <f.wordingham@databound.co.uk>"]
 edition = "2021"
+description = "Simulation world board"
+repository = "https://github.com/FreddyWordingham/FreddyWordingham"
+readme = "README.md"
+license = "MIT"
+keywords = ["simulation", "domain"]
+categories = ["science", "simulation", "ai"]
+documentation = "https://FreddyWordingham.github.io/FreddyWordingham"
 
 [features]
 default = []

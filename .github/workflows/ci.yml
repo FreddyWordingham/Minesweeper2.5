@@ -23,7 +23,10 @@ jobs:
               uses: actions-rs/toolchain@v1
               with:
                   toolchain: stable
-            - run: cargo build --release --all-features
+                  components: clippy
+            - run: |
+                  cargo build --release --all-features
+                  cargo check
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
