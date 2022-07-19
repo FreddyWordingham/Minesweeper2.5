@@ -20,8 +20,6 @@ use board_plugin::{resources::BoardOptions, BoardPlugin};
 // }
 
 fn main() {
-    // log(&format!("Hello! {}", name()));
-
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
         title: "SimRPG!".to_string(),
