@@ -28,9 +28,7 @@ jobs:
               with:
                   toolchain: stable
                   components: clippy
-            - run: |
-                  cargo build --release --all-features
-                  cargo check
+            - run: cargo check
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
@@ -84,6 +82,13 @@ jobs:
               with:
                   fetch-depth: 2
 
+            - name: Rust compilation
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  components: clippy
+            - run: cargo check
+
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
               with:
@@ -135,6 +140,13 @@ jobs:
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 2
+
+            - name: Rust compilation
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  components: clippy
+            - run: cargo check
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v1
