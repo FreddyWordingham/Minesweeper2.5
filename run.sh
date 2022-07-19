@@ -16,6 +16,7 @@ function update_assets() {
     echo "Updating assets...";
     rm -r ./app/static/assets;
     rm -r ./docs/*;
+    cp ./assets/index.html ./docs/;
     cp -r ./assets ./app/static/;
     cp -r ./assets ./docs/assets/;
 }
