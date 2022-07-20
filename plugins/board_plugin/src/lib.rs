@@ -40,6 +40,7 @@
 
 pub mod bounds;
 pub mod components;
+pub mod events;
 pub mod resources;
 pub mod systems;
 
@@ -50,6 +51,7 @@ use bounds::Bounds;
 #[cfg(feature = "debug")]
 use components::Uncover;
 use components::{Bomb, BombNeighbour, Coordinates};
+use events::TileTriggerEvent;
 use resources::{Board, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
 pub struct BoardPlugin;
@@ -58,7 +60,10 @@ impl Plugin for BoardPlugin {
     #[inline]
     fn build(&self, app: &mut App) {
         app.add_startup_system(Self::create_board)
-            .add_system(systems::input::input_handling);
+            .add_system(systems::input::input_handling)
+            .add_system(systems::uncover::trigger_event_handler)
+            .add_system(systems::uncover::uncover_tiles)
+            .add_event::<TileTriggerEvent>();
         #[cfg(feature = "debug")]
         {
             app.register_inspectable::<Coordinates>();
