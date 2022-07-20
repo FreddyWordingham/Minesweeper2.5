@@ -7,6 +7,7 @@ use bevy::{
 
 #[derive(Debug)]
 pub struct Board {
+    pub entity: Entity,
     pub tile_map: TileMap,
     pub covered_tiles: HashMap<Coordinates, Entity>,
     pub bounds: Bounds,
@@ -17,12 +18,14 @@ impl Board {
     #[inline]
     #[must_use]
     pub fn new(
+        entity: Entity,
         tile_map: TileMap,
         covered_tiles: HashMap<Coordinates, Entity>,
         bounds: Bounds,
         tile_size: f32,
     ) -> Self {
         Self {
+            entity,
             tile_map,
             covered_tiles,
             bounds,

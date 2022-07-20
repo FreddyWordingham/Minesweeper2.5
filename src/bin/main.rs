@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{log, prelude::*};
 
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::WorldInspectorPlugin;
@@ -19,6 +19,12 @@ use board_plugin::{resources::BoardOptions, BoardPlugin};
 //     fn log(s: &str);
 // }
 
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub enum AppState {
+    InGame,
+    Out,
+}
+
 fn main() {
     let mut app = App::new();
     app.insert_resource(WindowDescriptor {
@@ -37,8 +43,12 @@ fn main() {
         tile_padding: 1.0,
         ..default()
     })
-    .add_plugin(BoardPlugin)
-    .add_system(bevy::input::system::exit_on_esc_system);
+    .add_state(AppState::InGame)
+    .add_plugin(BoardPlugin {
+        running_state: AppState::InGame,
+    })
+    .add_system(bevy::input::system::exit_on_esc_system)
+    .add_system(state_handler);
     app.add_startup_system(camera_setup);
 
     app.run();
@@ -46,4 +56,21 @@ fn main() {
 
 fn camera_setup(mut commands: Commands) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+}
+
+fn state_handler(mut state: ResMut<State<AppState>>, keys: Res<Input<KeyCode>>) {
+    if keys.just_pressed(KeyCode::C) {
+        log::debug!("clearing detected");
+        if state.current() == &AppState::InGame {
+            log::info!("clearing game");
+            state.set(AppState::Out).unwrap();
+        }
+    }
+    if keys.just_pressed(KeyCode::R) {
+        log::debug!("reset detected");
+        if state.current() == &AppState::Out {
+            log::info!("loading game");
+            state.set(AppState::InGame).unwrap();
+        }
+    }
 }

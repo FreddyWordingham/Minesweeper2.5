@@ -44,26 +44,21 @@ pub mod events;
 pub mod resources;
 pub mod systems;
 
-use bevy::{log, math::Vec3Swizzles, prelude::*, utils::HashMap};
+use bevy::{ecs::schedule::StateData, log, math::Vec3Swizzles, prelude::*, utils::HashMap};
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::RegisterInspectable;
 use bounds::Bounds;
-#[cfg(feature = "debug")]
-use components::Uncover;
 use components::{Bomb, BombNeighbour, Coordinates, Uncover};
 use events::TileTriggerEvent;
 use resources::{Board, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
-pub struct BoardPlugin;
+pub struct BoardPlugin<T> {
+    pub running_state: T,
+}
 
-impl Plugin for BoardPlugin {
+impl<T: StateData> Plugin for BoardPlugin<T> {
     #[inline]
     fn build(&self, app: &mut App) {
-        app.add_startup_system(Self::create_board)
-            .add_system(systems::input::input_handling)
-            .add_system(systems::uncover::trigger_event_handler)
-            .add_system(systems::uncover::uncover_tiles)
-            .add_event::<TileTriggerEvent>();
         #[cfg(feature = "debug")]
         {
             app.register_inspectable::<Coordinates>();
@@ -71,11 +66,32 @@ impl Plugin for BoardPlugin {
             app.register_inspectable::<Bomb>();
             app.register_inspectable::<Uncover>();
         }
+
+        // When the running states comes into the stack we load a board
+        app.add_system_set(
+            SystemSet::on_enter(self.running_state.clone()).with_system(Self::create_board),
+        )
+        // We handle input and trigger events only if the state is active
+        .add_system_set(
+            SystemSet::on_update(self.running_state.clone())
+                .with_system(systems::input::input_handling)
+                .with_system(systems::uncover::trigger_event_handler),
+        )
+        // We handle uncovering even if the state is inactive
+        .add_system_set(
+            SystemSet::on_in_stack_update(self.running_state.clone())
+                .with_system(systems::uncover::uncover_tiles),
+        )
+        .add_event::<TileTriggerEvent>()
+        .add_system_set(
+            SystemSet::on_exit(self.running_state.clone()).with_system(Self::cleanup_board),
+        );
+
         log::info!("Loaded Board Plugin");
     }
 }
 
-impl BoardPlugin {
+impl<T> BoardPlugin<T> {
     /// System to generate the complete board
     #[inline]
     #[allow(clippy::needless_pass_by_value)]
@@ -124,7 +140,7 @@ impl BoardPlugin {
         let mut safe_start = None;
         let mut covered_tiles =
             HashMap::with_capacity((tile_map.width() * tile_map.height()).into());
-        commands
+        let board_entity = commands
             .spawn()
             .insert(Name::new("Board"))
             .insert(Transform::from_translation(board_mins))
@@ -155,7 +171,8 @@ impl BoardPlugin {
                     &font,
                     &mut safe_start,
                 );
-            });
+            })
+            .id();
 
         if options.safe_start {
             if let Some(entity) = safe_start {
@@ -164,6 +181,7 @@ impl BoardPlugin {
         }
 
         commands.insert_resource(Board::new(
+            board_entity,
             tile_map,
             covered_tiles,
             Bounds {
@@ -303,5 +321,10 @@ impl BoardPlugin {
         let max_width = window.width / board_width as f32;
         let max_heigth = window.height / board_height as f32;
         max_width.min(max_heigth).clamp(min, max)
+    }
+
+    fn cleanup_board(board: Res<Board>, mut commands: Commands) {
+        commands.entity(board.entity).despawn_recursive();
+        commands.remove_resource::<Board>();
     }
 }
