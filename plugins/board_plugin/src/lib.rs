@@ -138,8 +138,7 @@ impl<T> BoardPlugin<T> {
         };
 
         let mut safe_start = None;
-        let mut covered_tiles =
-            HashMap::with_capacity((tile_map.width() * tile_map.height()).into());
+        let mut covered_tiles = HashMap::with_capacity(tile_map.width() * tile_map.height());
         let board_entity = commands
             .spawn()
             .insert(Name::new("Board"))
@@ -323,6 +322,7 @@ impl<T> BoardPlugin<T> {
         max_width.min(max_heigth).clamp(min, max)
     }
 
+    #[allow(clippy::needless_pass_by_value)]
     fn cleanup_board(board: Res<Board>, mut commands: Commands) {
         commands.entity(board.entity).despawn_recursive();
         commands.remove_resource::<Board>();

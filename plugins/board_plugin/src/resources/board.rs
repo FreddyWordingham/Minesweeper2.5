@@ -17,7 +17,7 @@ pub struct Board {
 impl Board {
     #[inline]
     #[must_use]
-    pub fn new(
+    pub const fn new(
         entity: Entity,
         tile_map: TileMap,
         covered_tiles: HashMap<Coordinates, Entity>,
@@ -54,16 +54,22 @@ impl Board {
     }
 
     /// Retrieves a covered tile entity
+    #[must_use]
+    #[inline]
     pub fn tile_to_uncover(&self, coords: &Coordinates) -> Option<&Entity> {
         self.covered_tiles.get(coords)
     }
 
     /// We try to uncover a tile, returning the entity
+    #[must_use]
+    #[inline]
     pub fn try_uncover_tile(&mut self, coords: &Coordinates) -> Option<Entity> {
         self.covered_tiles.remove(coords)
     }
 
     /// We retrieve the adjacent covered tile entities of `coord`
+    #[must_use]
+    #[inline]
     pub fn adjacent_covered_tiles(&self, coord: Coordinates) -> Vec<Entity> {
         TileMap::safe_square_at(coord)
             .filter_map(|c| self.covered_tiles.get(&c))

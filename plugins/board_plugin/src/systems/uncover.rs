@@ -4,6 +4,8 @@ use crate::{
     components::Uncover, events::TileTriggerEvent, Board, Bomb, BombNeighbour, Coordinates,
 };
 
+#[allow(clippy::needless_pass_by_value)]
+#[inline]
 pub fn trigger_event_handler(
     mut commands: Commands,
     board: Res<Board>,
@@ -16,6 +18,8 @@ pub fn trigger_event_handler(
     }
 }
 
+#[allow(clippy::needless_pass_by_value)]
+#[inline]
 pub fn uncover_tiles(
     mut commands: Commands,
     mut board: ResMut<Board>,
