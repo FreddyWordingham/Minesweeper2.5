@@ -49,7 +49,7 @@ use bevy::{ecs::schedule::StateData, log, math::Vec3Swizzles, prelude::*, utils:
 use bevy_inspector_egui::RegisterInspectable;
 use bounds::Bounds;
 use components::{Bomb, BombNeighbour, Coordinates, Uncover};
-use events::TileTriggerEvent;
+use events::{BoardCompletedEvent, BombExplosionEvent, TileMarkEvent, TileTriggerEvent};
 use resources::{Board, BoardAssets, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
 pub struct BoardPlugin<T> {
@@ -80,12 +80,16 @@ impl<T: StateData> Plugin for BoardPlugin<T> {
         // We handle uncovering even if the state is inactive
         .add_system_set(
             SystemSet::on_in_stack_update(self.running_state.clone())
-                .with_system(systems::uncover::uncover_tiles),
+                .with_system(systems::uncover::uncover_tiles)
+                .with_system(systems::mark::mark_tiles),
         )
-        .add_event::<TileTriggerEvent>()
         .add_system_set(
             SystemSet::on_exit(self.running_state.clone()).with_system(Self::cleanup_board),
-        );
+        )
+        .add_event::<TileTriggerEvent>()
+        .add_event::<TileMarkEvent>()
+        .add_event::<BombExplosionEvent>()
+        .add_event::<BoardCompletedEvent>();
 
         log::info!("Loaded Board Plugin");
     }
@@ -226,7 +230,7 @@ impl<T> BoardPlugin<T> {
                                 ..default()
                             },
                             texture: board_assets.covered_tile_material.texture.clone(),
-                            transform: Transform::from_xyz(0., 0., 2.),
+                            transform: Transform::from_xyz(0.0, 0.0, 2.0),
                             ..default()
                         })
                         .insert(Name::new("Tile Cover"))
@@ -247,7 +251,7 @@ impl<T> BoardPlugin<T> {
                                     custom_size: Some(Vec2::splat(tile_size - tile_padding)),
                                     ..default()
                                 },
-                                transform: Transform::from_xyz(0., 0., 1.),
+                                transform: Transform::from_xyz(0.0, 0.0, 1.0),
                                 texture: board_assets.bomb_material.texture.clone(),
                                 ..default()
                             });

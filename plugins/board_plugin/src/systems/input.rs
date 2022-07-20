@@ -2,7 +2,10 @@ use bevy::input::{mouse::MouseButtonInput, ElementState};
 use bevy::log;
 use bevy::prelude::*;
 
-use crate::{events::TileTriggerEvent, Board};
+use crate::{
+    events::{TileMarkEvent, TileTriggerEvent},
+    Board,
+};
 
 #[inline]
 #[allow(clippy::needless_pass_by_value)]
@@ -11,6 +14,7 @@ pub fn input_handling(
     board: Res<Board>,
     mut button_evr: EventReader<MouseButtonInput>,
     mut tile_trigger_ewr: EventWriter<TileTriggerEvent>,
+    mut tile_mark_ewr: EventWriter<TileMarkEvent>,
 ) {
     let window = windows.get_primary().unwrap();
 
@@ -28,7 +32,7 @@ pub fn input_handling(
                         }
                         MouseButton::Right => {
                             log::info!("Trying to mark tile on {}", coordinates);
-                            // TODO: generate an event
+                            tile_mark_ewr.send(TileMarkEvent(coordinates));
                         }
                         MouseButton::Middle | MouseButton::Other(_) => (),
                     }
