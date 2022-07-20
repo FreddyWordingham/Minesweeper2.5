@@ -248,7 +248,7 @@ impl<T> BoardPlugin<T> {
                                     ..default()
                                 },
                                 transform: Transform::from_xyz(0., 0., 1.),
-                                texture: board_assets.tile_material.texture.clone(),
+                                texture: board_assets.bomb_material.texture.clone(),
                                 ..default()
                             });
                         });
