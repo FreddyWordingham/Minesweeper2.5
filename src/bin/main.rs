@@ -8,19 +8,19 @@ use board_plugin::{
     BoardPlugin,
 };
 
-// use wasm_bindgen::prelude::*;
+use wasm_bindgen::prelude::*;
 
-// #[wasm_bindgen(module = "/src/bin/main.js")]
-// extern "C" {
-//     fn name() -> String;
-// }
+#[wasm_bindgen(module = "/src/bin/main.js")]
+extern "C" {
+    fn alert_game_over() -> String;
+}
 
-// // lifted from the `console_log` example
-// #[wasm_bindgen]
-// extern "C" {
-//     #[wasm_bindgen(js_namespace = console)]
-//     fn log(s: &str);
-// }
+// lifted from the `console_log` example
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum AppState {
@@ -45,7 +45,8 @@ fn main() {
             running_state: AppState::InGame,
         })
         .add_system(bevy::input::system::exit_on_esc_system)
-        .add_system(state_handler);
+        .add_system(state_handler)
+        .add_system(completion_checker);
     app.add_startup_system(camera_setup);
 
     app.run();
@@ -113,4 +114,12 @@ fn setup_board(
     });
     // Plugin activation
     state.set(AppState::InGame).unwrap();
+}
+
+use board_plugin::events::BombExplosionEvent;
+fn completion_checker(mut bomb_explosion_event_reader: EventReader<BombExplosionEvent>) {
+    for event in bomb_explosion_event_reader.iter() {
+        log::info!("Bomb explosion event: {:?}", event);
+        alert_game_over();
+    }
 }
