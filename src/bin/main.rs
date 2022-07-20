@@ -3,7 +3,10 @@ use bevy::{log, prelude::*};
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::WorldInspectorPlugin;
 
-use board_plugin::{resources::BoardOptions, BoardPlugin};
+use board_plugin::{
+    resources::{BoardAssets, BoardOptions, SpriteMaterial},
+    BoardPlugin,
+};
 
 // use wasm_bindgen::prelude::*;
 
@@ -36,19 +39,13 @@ fn main() {
     .add_plugins(DefaultPlugins);
     #[cfg(feature = "debug")]
     app.add_plugin(WorldInspectorPlugin::new());
-    app.insert_resource(BoardOptions {
-        safe_start: true,
-        map_size: (50, 25),
-        bomb_count: 100,
-        tile_padding: 1.0,
-        ..default()
-    })
-    .add_state(AppState::InGame)
-    .add_plugin(BoardPlugin {
-        running_state: AppState::InGame,
-    })
-    .add_system(bevy::input::system::exit_on_esc_system)
-    .add_system(state_handler);
+    app.add_startup_system(setup_board)
+        .add_state(AppState::Out)
+        .add_plugin(BoardPlugin {
+            running_state: AppState::InGame,
+        })
+        .add_system(bevy::input::system::exit_on_esc_system)
+        .add_system(state_handler);
     app.add_startup_system(camera_setup);
 
     app.run();
@@ -73,4 +70,47 @@ fn state_handler(mut state: ResMut<State<AppState>>, keys: Res<Input<KeyCode>>) 
             state.set(AppState::InGame).unwrap();
         }
     }
+}
+
+fn setup_board(
+    mut commands: Commands,
+    mut state: ResMut<State<AppState>>,
+    asset_server: Res<AssetServer>,
+) {
+    // Board plugin options
+    commands.insert_resource(BoardOptions {
+        map_size: (20, 20),
+        bomb_count: 40,
+        tile_padding: 1.0,
+        safe_start: true,
+        ..default()
+    });
+    // Board assets
+    commands.insert_resource(BoardAssets {
+        label: "Default".to_string(),
+        board_material: SpriteMaterial {
+            colour: Color::WHITE,
+            ..default()
+        },
+        tile_material: SpriteMaterial {
+            colour: Color::DARK_GRAY,
+            ..default()
+        },
+        covered_tile_material: SpriteMaterial {
+            colour: Color::GRAY,
+            ..default()
+        },
+        bomb_counter_font: asset_server.load("fonts/pixeled.ttf"),
+        bomb_counter_colours: BoardAssets::default_colors(),
+        flag_material: SpriteMaterial {
+            texture: asset_server.load("sprites/flag.png"),
+            colour: Color::WHITE,
+        },
+        bomb_material: SpriteMaterial {
+            texture: asset_server.load("sprites/bomb.png"),
+            colour: Color::WHITE,
+        },
+    });
+    // Plugin activation
+    state.set(AppState::InGame).unwrap();
 }
