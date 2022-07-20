@@ -80,7 +80,7 @@ impl TileMap {
         let line: String = (0..=(self.width())).into_iter().map(|_| "--").collect();
         buffer = format!("{}{}\n", buffer, line);
 
-        for y in 0..self.height() {
+        for y in (0..self.height()).rev() {
             buffer = format!("{}|", buffer);
             for x in 0..self.width() {
                 buffer = format!(
