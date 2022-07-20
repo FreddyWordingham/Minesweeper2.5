@@ -50,7 +50,7 @@ use bevy_inspector_egui::RegisterInspectable;
 use bounds::Bounds;
 #[cfg(feature = "debug")]
 use components::Uncover;
-use components::{Bomb, BombNeighbour, Coordinates};
+use components::{Bomb, BombNeighbour, Coordinates, Uncover};
 use events::TileTriggerEvent;
 use resources::{Board, BoardOptions, BoardPosition, Tile, TileMap, TileSize};
 
