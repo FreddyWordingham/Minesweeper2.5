@@ -31,8 +31,8 @@ fn main() {
     #[cfg(feature = "debug")]
     app.add_plugin(WorldInspectorPlugin::new());
     app.insert_resource(BoardOptions {
-        map_size: (20, 10),
-        bomb_count: 20,
+        map_size: (50, 25),
+        bomb_count: 100,
         tile_padding: 1.0,
         ..default()
     })
