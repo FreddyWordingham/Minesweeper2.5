@@ -121,6 +121,7 @@ impl BoardPlugin {
             BoardPosition::Offset(p) => p,
         };
 
+        let mut safe_start = None;
         let mut covered_tiles =
             HashMap::with_capacity((tile_map.width() * tile_map.height()).into());
         commands
@@ -152,8 +153,15 @@ impl BoardPlugin {
                     &mut covered_tiles,
                     &bomb_image,
                     &font,
+                    &mut safe_start,
                 );
             });
+
+        if options.safe_start {
+            if let Some(entity) = safe_start {
+                commands.entity(entity).insert(Uncover);
+            }
+        }
 
         commands.insert_resource(Board::new(
             tile_map,
@@ -177,6 +185,7 @@ impl BoardPlugin {
         covered_tiles: &mut HashMap<Coordinates, Entity>,
         bomb_image: &Handle<Image>,
         font: &Handle<Font>,
+        safe_start_entity: &mut Option<Entity>,
     ) {
         for y in 0..tile_map.height() {
             for x in 0..tile_map.width() {
@@ -213,6 +222,10 @@ impl BoardPlugin {
                         .insert(Name::new("Tile Cover"))
                         .id();
                     covered_tiles.insert(coordinates, entity);
+
+                    if safe_start_entity.is_none() && tile_map.map()[(x, y)] == Tile::Empty {
+                        *safe_start_entity = Some(entity);
+                    }
                 });
 
                 match tile_map.map()[(x, y)] {
