@@ -1,5 +1,5 @@
 export function alert_game_over() {
-    alert("GAME OVER!");
+    console.log("GAME OVER!");
     $("#display").fadeOut();
     return "Rust";
 }
