@@ -81,7 +81,7 @@ fn setup_board(
     // Board plugin options
     commands.insert_resource(BoardOptions {
         map_size: (20, 20),
-        bomb_count: 40,
+        bomb_count: 100,
         tile_padding: 1.0,
         safe_start: true,
         ..default()
