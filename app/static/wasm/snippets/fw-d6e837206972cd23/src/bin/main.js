@@ -1,8 +1,10 @@
 export function alert_game_over() {
     console.log("GAME OVER!");
-    $("#display").fadeOut();
-    setTimeout(() => {
-        location.reload();
-    }, 500);
+    setTimeout(function () {
+        $("#display").fadeOut();
+        setTimeout(function () {
+            location.reload();
+        }, 1000);
+    }, 1000);
     return "Rust";
 }
