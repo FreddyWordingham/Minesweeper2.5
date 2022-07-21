@@ -4,23 +4,10 @@ use bevy::{log, prelude::*};
 use bevy_inspector_egui::WorldInspectorPlugin;
 
 use board_plugin::{
+    events::BombExplosionEvent,
     resources::{BoardAssets, BoardOptions, SpriteMaterial},
     BoardPlugin,
 };
-
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen(module = "/src/bin/main.js")]
-extern "C" {
-    fn alert_game_over() -> String;
-}
-
-// lifted from the `console_log` example
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum AppState {
@@ -39,6 +26,7 @@ fn main() {
     .add_plugins(DefaultPlugins);
     #[cfg(feature = "debug")]
     app.add_plugin(WorldInspectorPlugin::new());
+    app.add_startup_system(camera_setup);
     app.add_startup_system(setup_board)
         .add_state(AppState::Out)
         .add_plugin(BoardPlugin {
@@ -47,7 +35,6 @@ fn main() {
         .add_system(bevy::input::system::exit_on_esc_system)
         .add_system(state_handler)
         .add_system(completion_checker);
-    app.add_startup_system(camera_setup);
 
     app.run();
 }
@@ -81,7 +68,7 @@ fn setup_board(
     // Board plugin options
     commands.insert_resource(BoardOptions {
         map_size: (20, 20),
-        bomb_count: 100,
+        bomb_count: 50,
         tile_padding: 1.0,
         safe_start: true,
         ..default()
@@ -101,7 +88,7 @@ fn setup_board(
             colour: Color::GRAY,
             ..default()
         },
-        bomb_counter_font: asset_server.load("fonts/pixeled.ttf"),
+        bomb_counter_font: asset_server.load("fonts/raleway.ttf"),
         bomb_counter_colours: BoardAssets::default_colors(),
         flag_material: SpriteMaterial {
             texture: asset_server.load("sprites/flag.png"),
@@ -116,7 +103,20 @@ fn setup_board(
     state.set(AppState::InGame).unwrap();
 }
 
-use board_plugin::events::BombExplosionEvent;
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/src/bin/main.js")]
+extern "C" {
+    fn alert_game_over() -> String;
+}
+
+// lifted from the `console_log` example
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
 fn completion_checker(mut bomb_explosion_event_reader: EventReader<BombExplosionEvent>) {
     for event in bomb_explosion_event_reader.iter() {
         log::info!("Bomb explosion event: {:?}", event);
